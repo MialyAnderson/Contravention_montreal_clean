@@ -1,0 +1,97 @@
+#%RAML 1.0
+title: Service de Contraventions
+version: v1
+baseUri: http://localhost:5000
+
+/contrevenants:
+  get:
+    description: |
+      Retourne la liste des contraventions émises entre deux dates (inclusivement).
+      Les dates doivent être fournies sous forme de paramètres de requête au format ISO 8601 (YYYY-MM-DD).
+    queryParameters:
+      du:
+        type: date
+        required: true
+        description: Date de début de la plage
+      au:
+        type: date
+        required: true
+        description: Date de fin de la plage
+    responses:
+      200:
+        body:
+          application/json:
+            type: Contravention[]
+            example: |
+              [
+                {
+                  "etablissement": "AU COQ DDO",
+                  "date": "2023-10-16",
+                  "montant": 500.0,
+                  "ville": "Dollard-des-Ormeaux",
+                  "description": "Les personnes affectées à la préparation..."
+                }
+              ]
+
+types:
+  Contravention:
+    type: object
+    properties:
+      etablissement: string
+      date: date
+      montant: number
+      ville: string
+      description: string
+
+/demande-inspection:
+  post:
+    description: Crée une demande d'inspection d'un établissement.
+    body:
+      application/json:
+        type: DemandeInspection
+    responses:
+      200:
+        description: La demande a été reçue.
+      400:
+        description: Erreur de validation.
+
+/types:
+  DemandeInspection:
+    type: object
+    properties:
+      nom_etablissement: string
+      adresse: string
+      ville: string
+      date_visite: date
+      nom_prenom_client: string
+      description_probleme: string
+    required: [nom_etablissement, adresse, ville, date_visite, nom_prenom_client, description_probleme]
+
+
+/creer-profil:
+  post:
+    description: Créer un nouveau profil utilisateur
+    body:
+      application/json:
+        type: object
+        properties:
+          nom_complet: string
+          email: string
+          mot_de_passe: string
+          etablissements_surveilles: string[]
+        required: [nom_complet, email, mot_de_passe, etablissements_surveilles]
+    responses:
+      201:
+        body:
+          application/json:
+            example: |
+              {
+                "message": "Profil utilisateur créé avec succès."
+              }
+      400:
+        body:
+          application/json:
+            example: |
+              {
+                "error": "Validation échouée"
+              }

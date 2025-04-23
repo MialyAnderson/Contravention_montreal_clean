@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soumettre une plainte</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/plainte.css') }}">
+    <script src="{{ url_for('static', filename='js/plainte.js') }}" defer></script>
+</head>
+<body>
+
+<div class="hero-banner">
+    <h1><i class="fas fa-exclamation-circle me-2"></i> Signalez un restaurant non conforme</h1>
+    <p>Aidez-nous à maintenir les standards de sécurité alimentaire en signalant les problèmes rencontrés</p>
+    <a href="/" class="home-btn"><i class="fas fa-home me-1"></i> Accueil</a>
+</div>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2><i class="fas fa-clipboard-list"></i> Formulaire de plainte</h2>
+        </div>
+        
+        <div class="card-body">
+            <div class="alert alert-success" id="alertSuccess">
+                <i class="fas fa-check-circle me-2"></i> Votre plainte a été envoyée avec succès. Nous vous remercions de votre vigilance.
+            </div>
+            
+            <div class="alert alert-danger" id="alertError">
+                <i class="fas fa-exclamation-triangle me-2"></i> Une erreur s'est produite lors de l'envoi de votre plainte. Veuillez réessayer.
+            </div>
+            
+            <form id="formPlainte">
+                <div class="form-group">
+                    <label class="form-label">Nom de l'établissement</label>
+                    <input type="text" name="nom_etablissement" class="form-control" placeholder="Saisissez le nom complet du restaurant" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Adresse</label>
+                            <input type="text" name="adresse" class="form-control" placeholder="Numéro et nom de rue" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Ville</label>
+                            <input type="text" name="ville" class="form-control" placeholder="Ville" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Date de la visite</label>
+                            <input type="date" name="date_visite" class="form-control" required>
+                            <small class="form-text"><i class="fas fa-info-circle me-1"></i> Sélectionnez la date de votre visite dans l'établissement</small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Nom et prénom</label>
+                            <input type="text" name="nom_prenom_client" class="form-control" placeholder="Votre nom complet" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Description du problème</label>
+                    <textarea name="description_probleme" class="form-control" placeholder="Décrivez en détail le problème constaté (hygiène, conservation des aliments, etc.)" rows="5" required></textarea>
+                    <small class="form-text"><i class="fas fa-info-circle me-1"></i> Plus votre description sera précise, plus notre intervention sera efficace</small>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Gravité du problème</label>
+                    <select name="gravite" class="form-select">
+                        <option value="faible">Faible - Simple remarque</option>
+                        <option value="moyenne" selected>Moyenne - Problème nécessitant attention</option>
+                        <option value="elevee">Élevée - Problème urgent</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="consentement" name="consentement" required>
+                        <label class="form-check-label" for="consentement">
+                            J'accepte que mes informations soient utilisées dans le cadre de cette plainte
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="text-end">
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-paper-plane me-2"></i> Envoyer la plainte
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

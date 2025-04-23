@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats de la recherche</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/resultats.css') }}">
+    <script src="{{ url_for('static', filename='js/resultats.js') }}" defer></script>
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div class="hero-banner">
+        <h1><i class="fas fa-clipboard-list"></i> Résultats de la recherche</h1>
+        <p>Consultez les infractions alimentaires des établissements</p>
+    </div>
+    
+    <div class="container">
+        <div class="action-buttons">
+            <a href="/" class="btn-back">
+                <i class="fas fa-arrow-left me-2"></i>Retour à la recherche
+            </a>
+        </div>
+        
+        {% if violations %}
+        <div class="results-summary">
+            <div class="results-count">
+                <i class="fas fa-info-circle"></i>
+                <span><strong>{{ violations|length }}</strong> infractions trouvées</span>
+            </div>
+        </div>
+        
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="table table-hover" id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th data-sort="date"><i class="fas fa-calendar me-1"></i> Date</th>
+                            <th data-sort="etablissement"><i class="fas fa-store me-1"></i> Établissement</th>
+                            <th data-sort="description"><i class="fas fa-exclamation-circle me-1"></i> Description</th>
+                            <th data-sort="adresse"><i class="fas fa-map-marker-alt me-1"></i> Adresse</th>
+                            <th data-sort="ville"><i class="fas fa-city me-1"></i> Ville</th>
+                            <th data-sort="proprietaire"><i class="fas fa-user me-1"></i> Propriétaire</th>
+                            <th data-sort="montant"><i class="fas fa-dollar-sign me-1"></i> Montant</th>
+                            <th data-sort="statut"><i class="fas fa-gavel me-1"></i> Statut</th>
+                            <th data-sort="date_jugement"><i class="fas fa-balance-scale me-1"></i> Date jugement</th>
+                            <th data-sort="categorie"><i class="fas fa-tag me-1"></i> Catégorie</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in violations %}
+                        <tr>
+                            <td>{{ row.date[:4] }}-{{ row.date[4:6] }}-{{ row.date[6:] }}</td>
+                            <td>{{ row.etablissement }}</td>
+                            <td class="table-description" data-bs-toggle="tooltip" title="{{ row.description }}">
+                                {{ row.description }}
+                            </td>
+                            <td>{{ row.adresse }}</td>
+                            <td>{{ row.ville }}</td>
+                            <td>{{ row.proprietaire }}</td>
+                            <td>{{ row.montant }}$</td>
+                            <td>
+                                {% if row.statut == 'Payé' %}
+                                <span class="badge badge-success">{{ row.statut }}</span>
+                                {% elif row.statut == 'En attente' %}
+                                <span class="badge badge-warning">{{ row.statut }}</span>
+                                {% elif row.statut == 'Contesté' %}
+                                <span class="badge badge-danger">{{ row.statut }}</span>
+                                {% else %}
+                                <span class="badge badge-secondary">{{ row.statut }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ row.date_jugement[:4] }}-{{ row.date_jugement[4:6] }}-{{ row.date_jugement[6:] }}</td>
+                            <td>
+                                <span class="badge badge-info">{{ row.categorie }}</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        {% else %}
+            <div class="alert-empty">
+                <i class="fas fa-search"></i>
+                <h4>Aucun résultat trouvé</h4>
+                <p>Essayez de modifier vos critères de recherche pour obtenir plus de résultats. Vous pouvez élargir votre recherche en utilisant moins de filtres ou des termes plus généraux.</p>
+                <a href="/" class="btn-back mt-4">
+                    <i class="fas fa-search me-2"></i>Nouvelle recherche
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,212 @@
+:root {
+    --primary: #4361ee;
+    --primary-hover: #3a56d4;
+    --secondary: #f8f9fa;
+    --accent: #ff6b6b;
+    --text: #2b2d42;
+    --light-text: #8d99ae;
+    --border-radius: 10px;
+}
+
+body {
+    background-color: #f0f2f5;
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    color: var(--text);
+}
+
+.container {
+    max-width: 800px;
+    margin: 3rem auto;
+}
+
+.card {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary), #3f37c9);
+    color: white;
+    border: none;
+    padding: 1.5rem;
+    position: relative;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile-title {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.home-btn {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    transition: all 0.3s;
+}
+
+.home-btn:hover {
+    background-color: white;
+    color: var(--primary);
+}
+
+.card-body {
+    padding: 1.8rem;
+}
+
+.section-title {
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+.section-title i {
+    margin-right: 0.5rem;
+    color: var(--primary);
+}
+
+.list-group-item {
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    border: 1px solid rgba(0,0,0,0.1);
+    transition: all 0.2s;
+}
+
+.list-group-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.remove-btn {
+    background-color: var(--accent);
+    border: none;
+    color: white;
+    border-radius: 6px;
+    padding: 0.3rem 0.8rem;
+    transition: all 0.3s;
+}
+
+.remove-btn:hover {
+    background-color: #ff5252;
+    transform: scale(1.05);
+}
+
+.form-section {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+}
+
+.form-select, .form-control {
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.1);
+    padding: 0.6rem;
+}
+
+.form-select:focus, .form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.15);
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+}
+
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.file-upload-btn {
+    background-color: var(--secondary);
+    border: 1px dashed rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+}
+
+.file-upload-btn:hover {
+    background-color: rgba(67, 97, 238, 0.05);
+    border-color: var(--primary);
+}
+
+.file-upload-input {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.upload-icon {
+    font-size: 2rem;
+    color: var(--light-text);
+    margin-bottom: 0.5rem;
+}
+
+.profile-img-container {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.profile-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-top: 1rem;
+}
+
+.empty-list {
+    color: var(--light-text);
+    font-style: italic;
+    padding: 1rem;
+    text-align: center;
+    background-color: var(--secondary);
+    border-radius: 8px;
+}
+
+.form-text {
+    color: var(--light-text);
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+}

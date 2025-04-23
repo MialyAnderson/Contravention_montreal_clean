@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche d'infractions alimentaires</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/recherche.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/recherche.js') }}" defer></script>
+</head>
+<body>
+    <script>
+        window.utilisateurRole = "{{ session.get('role', '') }}";
+    </script>
+    
+    <div class="hero-banner">
+        <h1><i class="fas fa-search"></i> Découvrez les contraventions de vos restaurants</h1>
+        <p>Consultez les infractions alimentaires et assurez-vous de la sécurité des établissements que vous fréquentez</p>
+        
+        <div class="header-buttons">
+            {% if session.get('role') == 'admin' %}
+                <div class="dropdown">
+                    <button class="btn-nav dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-shield me-2"></i> Admin
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="/connexion">Changer de compte</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Se déconnecter</a></li>
+                    </ul>
+                </div>
+        
+            {% elif session.get('profil_id') %}
+                <div class="dropdown">
+                    <div class="avatar-container dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% if session.get('photo') %}
+                            <img src="{{ url_for('static', filename='uploads/' + session.photo) }}" 
+                                 alt="Photo de profil" 
+                                 class="avatar-img">
+                        {% else %}
+                            {{ session.nom_complet[0]|upper }}
+                        {% endif %}
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end mt-2">
+                        <li class="dropdown-item disabled text-center">
+                            <strong>{{ session.nom_complet }}</strong>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/profil-utilisateur"><i class="fas fa-user-circle me-2"></i>Mon profil</a></li>
+                        <li><a class="dropdown-item" href="/connexion"><i class="fas fa-exchange-alt me-2"></i>Changer de compte</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Se déconnecter</a></li>
+                    </ul>
+                </div>
+            {% else %}
+                <a href="/connexion" class="btn-nav">
+                    <i class="fas fa-sign-in-alt me-2"></i> Connexion
+                </a>
+            {% endif %}
+        
+            <a href="/plainte" class="btn-nav">
+                <i class="fas fa-exclamation-circle me-2"></i> Signaler
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="search-feature">
+                    <div class="search-feature-title">Recherchez les infractions des restaurants</div>
+                    <div class="search-feature-description">
+                        Notre base de données contient les infractions alimentaires des établissements. Utilisez les formulaires ci-dessous pour les consulter.
+                    </div>
+                </div>
+                
+                <div class="quick-filters">
+                    <div class="filter-pill"><i class="fas fa-utensils"></i> Restaurants</div>
+                    <div class="filter-pill"><i class="fas fa-pizza-slice"></i> Fast-food</div>
+                    <div class="filter-pill"><i class="fas fa-coffee"></i> Cafés</div>
+                    <div class="filter-pill"><i class="fas fa-glass-cheers"></i> Bars</div>
+                    <div class="filter-pill"><i class="fas fa-globe-americas"></i> Tous</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="results-header">
+                <h2><i class="fas fa-search"></i> Recherche détaillée</h2>
+            </div>
+            <div class="card-body">
+                <form action="/recherche" method="get">
+                    <div class="row mb-3">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Nom de l'établissement</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-store"></i></span>
+                                <input type="text" name="nom" class="form-control" placeholder="ex: Subway">
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Propriétaire</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" name="proprietaire" class="form-control" placeholder="ex: Jean Tremblay">
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Rue</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                <input type="text" name="rue" class="form-control" placeholder="ex: boulevard Rosemont">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-custom">
+                            <i class="fas fa-search me-2"></i>Rechercher
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="section-separator"></div>
+
+        <div class="card">
+            <div class="results-header">
+                <h2><i class="fas fa-bolt"></i> Recherche rapide par date</h2>
+            </div>
+            <div class="card-body">
+                <form id="rechercheForm" class="row g-3 align-items-end">
+                    <div class="col-md-5">
+                        <label for="du" class="form-label">Date de début</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                            <input type="date" id="du" name="du" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="au" class="form-label">Date de fin</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                            <input type="date" id="au" name="au" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-custom w-100">
+                            <i class="fas fa-bolt me-2"></i>Rechercher
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="loading-indicator" id="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultatsSection" class="card" style="display:none;">
+            <div class="results-header" id="toggleResultats">
+                <h2>
+                    <i class="fas fa-clipboard-list"></i>
+                    Résultats de recherche
+                </h2>
+                <button class="toggle-btn" aria-label="Basculer les résultats">
+                    <i class="fas fa-chevron-down" id="toggleIcon"></i>
+                </button>
+            </div>
+            <div class="results-content" id="resultsContent">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="resultatsTable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Établissement</th>
+                                    <th scope="col">Nombre de contraventions</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="no-results" id="noResults" style="display:none;">
+                        <i class="fas fa-search"></i>
+                        <p>Aucun résultat trouvé pour cette recherche.</p>
+                        <p>Essayez de modifier vos critères de recherche.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-separator"></div>
+
+        <div class="card">
+            <div class="results-header">
+                <h2><i class="fas fa-utensils"></i> Recherche par restaurant</h2>
+            </div>
+            <div class="card-body">
+                <form id="formulaireRestaurant" class="row g-3 align-items-end">
+                    <div class="col-md-10">
+                        <label class="form-label" for="listeRestaurants">Choisissez un établissement</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-store"></i></span>
+                            <select id="listeRestaurants" class="form-select" required>
+                                <option value="" selected disabled>Sélectionnez un restaurant</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-custom w-100">
+                            <i class="fas fa-eye me-2"></i>Afficher
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="loading-indicator" id="loadingRestaurant">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="infractionsResultat" class="card" style="display:none;">
+            <div class="results-header" id="toggleInfractions">
+                <h2>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Infractions du restaurant
+                </h2>
+                <button class="toggle-btn" aria-label="Basculer les infractions">
+                    <i class="fas fa-chevron-down" id="toggleIconInfractions"></i>
+                </button>
+            </div>
+            <div class="results-content" id="infractionsContent">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Montant</th>
+                                    <th>Ville</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="no-results" id="noInfractions" style="display:none;">
+                        <i class="fas fa-check-circle"></i>
+                        <p>Aucune infraction n'a été enregistrée pour ce restaurant.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
